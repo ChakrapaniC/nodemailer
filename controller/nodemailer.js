@@ -3,33 +3,37 @@ require('dotenv').config();
 
 const sendMail = async (req, res) => {
     try {
-        console.log(process.env.ETHEREAL_USER)
+
         //connect with smtp
         const transporter = nodemailer.createTransport({
             host: "smtp.ethereal.email",
-            port: 587,
-            secure: false, // Use `true` for port 465, `false` for all other ports
+            service: "Gmail",
+            host: "smtp.gmail.com",
+            port: 465,
+            secure: true, 
             auth: {
                 user: process.env.ETHEREAL_USER,  
                 pass: process.env.ETHEREAL_PASS   
             }
         });
-
+        
+        const mailOptions = {
+            from: "dukesharma71@gmail.com",
+            to: "chitranshsharma53@gmail.com",
+            subject: "Hello from Nodemailer",
+            text: "This is a test email sent using Nodemailer.",
+          };
         //send mail
-        const info = await transporter.sendMail({
-            from: '"Chakrapani Chaturvedi" <chakrapani@gmail.com>',
-            to: "chitranshsharma53@gmail.com", 
-            subject: "Hello chitransh",
-            text: "How you doing", 
-            html: "<b>How you doing?</b>",
-        });
-
-        console.log("Message sent: %s", info.messageId);
-        res.json(info);
-
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              console.error("Error sending email: ", error);
+            } else {
+              console.log("Email sent: ", info.response);
+            }
+          });
+          
     } catch (error) {
         console.error(error);
-        res.send({ error });
     }
 };
 
