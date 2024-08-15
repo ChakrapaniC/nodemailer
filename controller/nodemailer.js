@@ -12,8 +12,8 @@ const sendMail = async (req, res) => {
             port: 465,
             secure: true, 
             auth: {
-                user: process.env.ETHEREAL_USER,  
-                pass: process.env.ETHEREAL_PASS   
+                user: process.env.USER,  
+                pass: process.env.PASS   
             }
         });
         
